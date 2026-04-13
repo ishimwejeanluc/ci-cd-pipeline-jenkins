@@ -1,6 +1,6 @@
 ---
 - name: Configure app host
-  hosts: web
+  hosts: all
   become: true
   gather_facts: false
   collections:
