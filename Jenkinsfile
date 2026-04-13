@@ -55,6 +55,13 @@ pipeline {
 
         stage('Install & Build') {
 
+           
+            agent {
+                docker {
+                    image 'python:3.11'
+                }
+            }
+
             steps {
                 echo 'Installing dependencies...'
                 sh '''
@@ -64,11 +71,6 @@ pipeline {
         }
 
         stage('Unit Test') {
-            agent {
-                docker {
-                    image 'python:3.11'
-                }
-            }
 
             steps {
                 echo 'Running tests...'
@@ -101,7 +103,7 @@ pipeline {
                     sshUserPrivateKey(credentialsId: 'ec2_ssh', keyFileVariable: 'ANSIBLE_SSH_KEY', usernameVariable: 'ANSIBLE_SSH_USER')
                 ]) {
                     sh '''
-                         ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i "$EC2_PUBLIC_IP," -u "$ANSIBLE_SSH_USER" --private-key "$ANSIBLE_SSH_KEY" ansible/main.yml \
+                         ansible-playbook -i "$EC2_PUBLIC_IP," -u "$ANSIBLE_SSH_USER" --private-key "$ANSIBLE_SSH_KEY" ansible/main.yml \
                           -e "docker_username=$DOCKER_USERNAME" \
                           -e "docker_password=$DOCKER_PASSWORD" \
                           -e "web_image=$DOCKER_IMAGE:latest" \
