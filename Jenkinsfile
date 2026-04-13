@@ -55,13 +55,6 @@ pipeline {
 
         stage('Install & Build') {
 
-           
-            agent {
-                docker {
-                    image 'python:3.11'
-                }
-            }
-
             steps {
                 echo 'Installing dependencies...'
                 sh '''
