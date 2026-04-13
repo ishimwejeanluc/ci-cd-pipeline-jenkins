@@ -1,5 +1,5 @@
 pipeline {
-    agent none   
+    agent any 
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -10,7 +10,7 @@ pipeline {
     stages {
 
         stage('Load .env') {
-            agent any
+            
             steps {
                 withCredentials([file(credentialsId: 'app_env_file', variable: 'APP_ENV_FILE')]) {
                     sh 'cp "$APP_ENV_FILE" .env && chmod 600 .env'
@@ -46,7 +46,7 @@ pipeline {
         }
 
         stage('Checkout') {
-            agent any
+          
             steps {
                 echo 'Checking out code...'
                 checkout scm
@@ -73,12 +73,6 @@ pipeline {
 
         stage('Test') {
 
-            agent {
-                docker {
-                    image 'python:3.11'
-                }
-            }
-
             steps {
                 echo 'Running tests...'
                 
@@ -86,7 +80,7 @@ pipeline {
         }
 
         stage('Docker Build') {
-            agent any
+            
             steps {
                 echo 'Building the docker image...'
                 sh 'docker build -t $DOCKER_IMAGE:latest -f web/Dockerfile web'
@@ -94,7 +88,7 @@ pipeline {
         }
 
         stage('Push Image') {
-            agent any
+           
             steps {
                 echo 'Pushing the docker image...'
                 sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
@@ -103,7 +97,7 @@ pipeline {
         }
 
         stage('Deploy') {
-            agent any
+            
             steps {
                 echo 'Deploying with Ansible...'
                 withCredentials([
@@ -125,7 +119,7 @@ pipeline {
         }
 
         stage('Cleanup') {
-            agent any
+           
             steps {
                 echo 'Cleaning up old images...'
                 sh 'docker image prune -f || true'
