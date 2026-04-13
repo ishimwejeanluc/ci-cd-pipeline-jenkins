@@ -53,7 +53,7 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install & Build') {
 
            
             agent {
@@ -65,13 +65,12 @@ pipeline {
             steps {
                 echo 'Installing dependencies...'
                 sh '''
-                    pip install --upgrade pip
                     pip install -r web/requirements.txt
                 '''
             }
         }
 
-        stage('Test') {
+        stage('Unit Test') {
 
             steps {
                 echo 'Running tests...'
@@ -87,7 +86,7 @@ pipeline {
             }
         }
 
-        stage('Push Image') {
+        stage('Push to Registry') {
            
             steps {
                 echo 'Pushing the docker image...'
@@ -96,7 +95,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to EC2') {
             
             steps {
                 echo 'Deploying with Ansible...'
