@@ -149,16 +149,9 @@ The pipeline is hardcoded to use these credential IDs:
 
 If the IDs in Jenkins do not match exactly, deployment fails.
 
-### 7.1 Add environment file credential
+#
 
-In Jenkins UI:
-
-1. Manage Jenkins -> Credentials -> Add Credentials.
-2. Kind: Secret file.
-3. Upload `jenkins-app.env`.
-4. Set ID exactly to `app_env_file`.
-
-### 7.2 Add EC2 SSH credential
+### 7.1 Add EC2 SSH credential
 
 In Jenkins UI:
 
