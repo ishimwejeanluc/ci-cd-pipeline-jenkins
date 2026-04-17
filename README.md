@@ -409,3 +409,8 @@ curl -fsS http://<EC2_PUBLIC_IP>:5000/topics
 6. Create Jenkins pipeline job linked to GitHub repo and `Jenkinsfile`.
 7. Configure GitHub webhook to Jenkins.
 8. Push code to GitHub and watch Jenkins deploy automatically.
+
+
+
+
+Author: Jean-Luc Ishimwe
